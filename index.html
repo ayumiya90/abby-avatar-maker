@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINE 大頭照產生器｜免費自訂底色、文字、LOGO 一鍵下載</title>
+<meta name="description" content="免費線上 LINE 大頭照產生器！自訂底色、文字、Emoji、上傳 LOGO，自動符合 LINE 圓形顯示規格，一鍵下載 PNG。由紀澄 Abby 製作。">
+<meta name="keywords" content="LINE 大頭照,頭照產生器,LINE icon 製作,大頭貼產生器,LOGO 頭照,紀澄 Abby">
+<meta name="author" content="紀澄 Abby">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://line.abbychi.com/">
+<meta property="og:title" content="LINE 大頭照產生器｜免費自訂底色、文字、LOGO 一鍵下載">
+<meta property="og:description" content="免費線上 LINE 大頭照產生器！自訂底色、文字、Emoji、上傳 LOGO，自動符合 LINE 圓形顯示規格，一鍵下載 PNG。">
+<meta property="og:image" content="https://line.abbychi.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="LINE 大頭照產生器">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://line.abbychi.com/">
+<meta name="twitter:title" content="LINE 大頭照產生器｜免費自訂底色、文字、LOGO 一鍵下載">
+<meta name="twitter:description" content="免費線上 LINE 大頭照產生器！自訂底色、文字、Emoji、上傳 LOGO，自動符合 LINE 圓形顯示規格，一鍵下載 PNG。">
+<meta name="twitter:image" content="https://line.abbychi.com/og.png">
+
+<link rel="canonical" href="https://line.abbychi.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8A%3C/text%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    min-height: 100vh;
+    padding: 24px;
+    color: #333;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(135deg, #06c755 0%, #04a548 100%);
+    color: #fff;
+    padding: 28px 32px;
+  }
+  h1 { font-size: 24px; font-weight: 700; }
+  .subtitle { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 32px;
+  }
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .container { border-radius: 14px; }
+    header { padding: 20px 18px; }
+    h1 { font-size: 20px; }
+    .subtitle { font-size: 13px; }
+    .main { grid-template-columns: 1fr; gap: 20px; padding: 18px; }
+  }
+  .preview-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .preview-toggle {
+    display: inline-flex;
+    background: #f0f2f5;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 2px;
+  }
+  .preview-toggle button {
+    padding: 8px 18px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .preview-toggle button.active {
+    background: #fff;
+    color: #06c755;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .preview-box {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  @media (max-width: 768px) {
+    .preview-box { width: min(320px, 100%); height: auto; }
+  }
+  #canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    background:
+      linear-gradient(45deg, #e5e7eb 25%, transparent 25%) 0 0 / 20px 20px,
+      linear-gradient(-45deg, #e5e7eb 25%, transparent 25%) 0 10px / 20px 20px,
+      linear-gradient(45deg, transparent 75%, #e5e7eb 75%) 10px -10px / 20px 20px,
+      linear-gradient(-45deg, transparent 75%, #e5e7eb 75%) -10px 0 / 20px 20px,
+      #fff;
+    transition: border-radius 0.3s ease;
+  }
+  #canvas.circle {
+    border-radius: 50%;
+  }
+  .preview-hint {
+    font-size: 12px;
+    color: #999;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+  }
+  input[type="text"], select, textarea {
+    padding: 10px 14px;
+    border: 1.5px solid #e0e4e8;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: #06c755;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+    line-height: 1.5;
+  }
+  .color-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  input[type="color"] {
+    width: 52px;
+    height: 42px;
+    border: 1.5px solid #e0e4e8;
+    border-radius: 10px;
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+  }
+  .color-hex {
+    flex: 1;
+    font-family: "Courier New", monospace;
+    text-transform: uppercase;
+  }
+  .preset-colors {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .preset-color {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    transition: transform 0.15s;
+  }
+  .preset-color:hover { transform: scale(1.15); }
+  .preset-color.transparent {
+    background:
+      linear-gradient(45deg, #d1d5db 25%, transparent 25%) 0 0 / 10px 10px,
+      linear-gradient(-45deg, #d1d5db 25%, transparent 25%) 0 5px / 10px 10px,
+      linear-gradient(45deg, transparent 75%, #d1d5db 75%) 5px -5px / 10px 10px,
+      linear-gradient(-45deg, transparent 75%, #d1d5db 75%) -5px 0 / 10px 10px,
+      #fff !important;
+    position: relative;
+  }
+  .preset-color.transparent::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid #aaa;
+  }
+  .color-row.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .ratio-row, .mode-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 8px;
+    border: 1.5px solid #e0e4e8;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    background: #fff;
+    color: #666;
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .chip { font-size: 12px; padding: 8px 6px; }
+    .chip-extra { display: none; }
+  }
+  .chip.active {
+    border-color: #06c755;
+    background: #06c755;
+    color: #fff;
+  }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  input[type="range"] {
+    flex: 1;
+    accent-color: #06c755;
+  }
+  .slider-value {
+    font-size: 13px;
+    color: #666;
+    min-width: 42px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .emoji-picker {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    padding: 10px;
+    background: #f7f8fa;
+    border-radius: 10px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  @media (max-width: 480px) {
+    .emoji-picker { grid-template-columns: repeat(6, 1fr); }
+  }
+  .emoji-btn {
+    padding: 6px;
+    font-size: 20px;
+    background: #fff;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .emoji-btn:hover { background: #e8f5e9; }
+  .emoji-btn.active { border-color: #06c755; background: #e8f5e9; }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: #06c755;
+    color: #fff;
+  }
+  .btn-primary:hover { background: #04a548; }
+  .btn-secondary {
+    background: #f0f2f5;
+    color: #555;
+  }
+  .btn-secondary:hover { background: #e4e7eb; }
+  .hint {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.5;
+  }
+  .tab-row {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1.5px solid #e0e4e8;
+    margin-bottom: 4px;
+  }
+  .tab {
+    padding: 8px 14px;
+    border: none;
+    background: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1.5px;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .tab { padding: 6px 10px; font-size: 12px; }
+  }
+  .tab.active {
+    color: #06c755;
+    border-bottom-color: #06c755;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: flex; flex-direction: column; gap: 12px; }
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 28px 20px;
+    border: 2px dashed #d0d5dc;
+    border-radius: 12px;
+    background: #fafbfc;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .upload-box:hover {
+    border-color: #06c755;
+    background: #f0faf3;
+  }
+  .upload-box.has-file {
+    border-color: #06c755;
+    background: #f0faf3;
+  }
+  .upload-box.dragging {
+    border-color: #06c755;
+    background: #e8f7ec;
+    transform: scale(1.01);
+  }
+  .upload-icon { font-size: 32px; }
+  .upload-text { font-size: 14px; font-weight: 600; color: #444; }
+  .upload-hint { font-size: 12px; color: #999; }
+  .upload-filename {
+    font-size: 12px;
+    color: #06c755;
+    font-weight: 600;
+    margin-top: 4px;
+    word-break: break-all;
+  }
+  footer {
+    padding: 20px 32px;
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid #eef0f2;
+    background: #fafbfc;
+  }
+  footer a {
+    color: #06c755;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  footer a:hover { opacity: 0.7; }
+  .download-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(6, 199, 85, 0.95);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(6, 199, 85, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 100;
+    transition: transform 0.3s ease;
+    cursor: default;
+    user-select: none;
+  }
+  .download-badge.pop {
+    animation: popBadge 0.6s ease;
+  }
+  @keyframes popBadge {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .download-badge .icon { font-size: 15px; }
+  .download-badge .count { font-variant-numeric: tabular-nums; }
+  @media (max-width: 768px) {
+    .download-badge {
+      bottom: 12px;
+      right: 12px;
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>LINE 大頭照產生器</h1>
+      <p class="subtitle">選比例、調底色、加文字或 emoji，一鍵下載方形 PNG</p>
+    </header>
+
+    <div class="main">
+      <div class="preview-wrap">
+        <div class="preview-toggle">
+          <button class="active" data-view="square">方形原圖</button>
+          <button data-view="circle">圓形顯示</button>
+        </div>
+        <div class="preview-box">
+          <canvas id="canvas" width="640" height="640"></canvas>
+        </div>
+        <p class="preview-hint">下載為方形 PNG，LINE 顯示時會自動裁成圓形</p>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <label>尺寸比例</label>
+          <div class="ratio-row">
+            <div class="chip active" data-size="640">640<span class="chip-extra">（推薦）</span></div>
+            <div class="chip" data-size="480">480</div>
+            <div class="chip" data-size="1080">1080</div>
+          </div>
+          <p class="hint">LINE 大頭照以 1:1 方形上傳，顯示時會自動裁成圓形</p>
+        </div>
+
+        <div class="field">
+          <label>底色</label>
+          <div class="color-row">
+            <input type="color" id="bgColor" value="#06C755">
+            <input type="text" id="bgHex" class="color-hex" value="#06C755" maxlength="7">
+          </div>
+          <div class="preset-colors">
+            <div class="preset-color" style="background:#06C755" data-color="#06C755"></div>
+            <div class="preset-color" style="background:#FF6B6B" data-color="#FF6B6B"></div>
+            <div class="preset-color" style="background:#FFA94D" data-color="#FFA94D"></div>
+            <div class="preset-color" style="background:#FFD93D" data-color="#FFD93D"></div>
+            <div class="preset-color" style="background:#4D96FF" data-color="#4D96FF"></div>
+            <div class="preset-color" style="background:#9B72CF" data-color="#9B72CF"></div>
+            <div class="preset-color" style="background:#F582AE" data-color="#F582AE"></div>
+            <div class="preset-color" style="background:#2D3047" data-color="#2D3047"></div>
+            <div class="preset-color" style="background:#F7F7F7" data-color="#F7F7F7"></div>
+            <div class="preset-color transparent" data-color="transparent" title="透明背景"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="tab-row" style="flex-wrap:wrap">
+            <button class="tab active" data-tab="text">文字</button>
+            <button class="tab" data-tab="emoji">Emoji</button>
+            <button class="tab" data-tab="both">文字+Emoji</button>
+            <button class="tab" data-tab="logo">LOGO</button>
+            <button class="tab" data-tab="logotext">LOGO+文字</button>
+          </div>
+
+          <div class="tab-panel active" data-panel="text">
+            <textarea id="textInput" placeholder="輸入文字（按 Enter 可換行，大小會自動調整以符合圓形範圍）" rows="2" maxlength="40">紀澄</textarea>
+            <p class="hint">💡 文字會自動縮放並居中，確保在圓形顯示時完整可見</p>
+            <div class="color-row">
+              <label style="min-width:50px">顏色</label>
+              <input type="color" id="textColor" value="#FFFFFF">
+              <input type="text" id="textHex" class="color-hex" value="#FFFFFF" maxlength="7">
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="emoji">
+            <input type="text" id="emojiInput" placeholder="貼上任意 emoji 或選下方" value="🍊">
+            <div class="emoji-picker" id="emojiPicker"></div>
+            <div class="slider-row">
+              <label style="min-width:50px">大小</label>
+              <input type="range" id="emojiSize" min="120" max="500" value="360">
+              <span class="slider-value" id="emojiSizeVal">360</span>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="both">
+            <input type="text" id="bothEmoji" placeholder="emoji（上方顯示）" value="✨">
+            <input type="text" id="bothText" placeholder="文字（下方顯示）" maxlength="10" value="HELLO">
+            <p class="hint">💡 Emoji 和文字會自動縮放並排版，確保在圓形範圍內完整可見</p>
+            <div class="color-row">
+              <label style="min-width:50px">字色</label>
+              <input type="color" id="bothTextColor" value="#FFFFFF">
+              <input type="text" id="bothTextHex" class="color-hex" value="#FFFFFF" maxlength="7">
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="logo">
+            <label for="logoFile" class="upload-box" id="uploadBox">
+              <div class="upload-icon">📁</div>
+              <div class="upload-text">點擊上傳 LOGO</div>
+              <div class="upload-hint">支援 PNG / JPG / SVG（建議透明背景 PNG）</div>
+              <input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml" hidden>
+            </label>
+            <div class="slider-row">
+              <label style="min-width:50px">大小</label>
+              <input type="range" id="logoSize" min="30" max="100" value="70">
+              <span class="slider-value" id="logoSizeVal">70%</span>
+            </div>
+            <div class="slider-row">
+              <label style="min-width:50px">上下</label>
+              <input type="range" id="logoOffsetY" min="-30" max="30" value="0">
+              <span class="slider-value" id="logoOffsetYVal">0</span>
+            </div>
+            <button class="btn btn-secondary" id="clearLogoBtn" style="display:none">移除 LOGO</button>
+          </div>
+
+          <div class="tab-panel" data-panel="logotext">
+            <label for="logoFile2" class="upload-box" id="uploadBox2">
+              <div class="upload-icon">📁</div>
+              <div class="upload-text">點擊上傳 LOGO</div>
+              <div class="upload-hint">支援 PNG / JPG / SVG（建議透明背景 PNG）</div>
+              <input type="file" id="logoFile2" accept="image/png,image/jpeg,image/svg+xml" hidden>
+            </label>
+            <input type="text" id="logoTextText" placeholder="輸入文字（顯示於 LOGO 下方）" maxlength="20" value="紀澄 Abby">
+            <p class="hint">💡 LOGO 和文字會自動縮放並居中，確保在圓形範圍內完整可見</p>
+            <div class="color-row">
+              <label style="min-width:50px">字色</label>
+              <input type="color" id="logoTextColor" value="#FFFFFF">
+              <input type="text" id="logoTextHex" class="color-hex" value="#FFFFFF" maxlength="7">
+            </div>
+            <button class="btn btn-secondary" id="clearLogoBtn2" style="display:none">移除 LOGO</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" id="resetBtn">重設</button>
+          <button class="btn btn-primary" id="downloadBtn">下載 PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      製作人｜<a href="https://www.facebook.com/chitzuling/" target="_blank" rel="noopener noreferrer">紀澄 Abby</a>
+    </footer>
+  </div>
+
+  <div class="download-badge" id="downloadBadge" title="全站累計下載次數">
+    <span class="icon">⬇️</span>
+    <span>全站已下載</span>
+    <span class="count" id="downloadCount">...</span>
+    <span>次</span>
+  </div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+document.querySelectorAll('.preview-toggle button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.preview-toggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (btn.dataset.view === 'circle') {
+      canvas.classList.add('circle');
+    } else {
+      canvas.classList.remove('circle');
+    }
+  };
+});
+
+const state = {
+  size: 640,
+  bgColor: '#06C755',
+  transparent: false,
+  mode: 'text',
+  text: '紀澄',
+  textColor: '#FFFFFF',
+  emoji: '🍊',
+  emojiSize: 360,
+  bothText: 'HELLO',
+  bothEmoji: '✨',
+  bothTextSize: 120,
+  bothEmojiSize: 200,
+  bothTextColor: '#FFFFFF',
+  logoImage: null,
+  logoSize: 70,
+  logoOffsetY: 0,
+  logoTextText: '紀澄 Abby',
+  logoTextColor: '#FFFFFF'
+};
+
+const EMOJIS = ['🍊','😀','😎','🥰','😺','🐶','🐱','🦊','🐻','🐼','🐨','🦁','🌸','🌺','🌻','🌈','⭐','✨','💫','🌙','☀️','🔥','💎','🎨','🎵','🎮','📚','☕','🍀','🌴','🎀','💖','💚','💙','💛','🧡','🍉','🍎','🍋','🥑'];
+
+const picker = document.getElementById('emojiPicker');
+EMOJIS.forEach(e => {
+  const b = document.createElement('button');
+  b.className = 'emoji-btn';
+  b.textContent = e;
+  b.onclick = () => {
+    state.emoji = e;
+    document.getElementById('emojiInput').value = e;
+    document.querySelectorAll('.emoji-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    draw();
+  };
+  picker.appendChild(b);
+});
+
+function drawAutoFitText(ctx, text, s, color) {
+  const fontFamily = '-apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif';
+  const cx = s / 2;
+  const cy = s / 2;
+  const safeRadius = s * 0.44;
+
+  let lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length === 0) return;
+
+  const candidates = [lines];
+  if (lines.length === 1) {
+    const line = lines[0];
+    const len = line.length;
+    if (len >= 4) {
+      for (let breakPoints = 1; breakPoints <= 2 && breakPoints < len; breakPoints++) {
+        const partSize = Math.ceil(len / (breakPoints + 1));
+        const split = [];
+        for (let i = 0; i < len; i += partSize) {
+          split.push(line.slice(i, i + partSize));
+        }
+        if (split.length > 1) candidates.push(split);
+      }
+    }
+  }
+
+  let best = { size: 0, lines: lines };
+  for (const candidateLines of candidates) {
+    const size = findMaxFontSize(ctx, candidateLines, safeRadius, fontFamily);
+    if (size > best.size) {
+      best = { size, lines: candidateLines };
+    }
+  }
+
+  const fontSize = best.size;
+  const finalLines = best.lines;
+  const lineHeight = fontSize * 1.15;
+
+  ctx.font = `900 ${fontSize}px ${fontFamily}`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  const totalHeight = lineHeight * finalLines.length;
+  const startY = cy - totalHeight / 2 + lineHeight / 2;
+
+  finalLines.forEach((line, i) => {
+    ctx.fillText(line, cx, startY + i * lineHeight);
+  });
+}
+
+function drawAutoFitLogoText(ctx, img, text, s, textColor) {
+  const textFont = '-apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif';
+  const cx = s / 2;
+  const cy = s / 2;
+  const safeRadius = s * 0.44;
+  const hasText = text && text.trim();
+
+  if (!img && !hasText) return;
+  if (!img && hasText) { drawAutoFitText(ctx, text, s, textColor); return; }
+  if (img && !hasText) {
+    const d = s * 0.7;
+    const r = img.width / img.height;
+    const w = r >= 1 ? d : d * r;
+    const h = r >= 1 ? d / r : d;
+    ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
+    return;
+  }
+
+  const baseText = s * 0.14;
+  const baseLogo = s * 0.6;
+  const gap = s * 0.025;
+  const imgRatio = img.width / img.height;
+
+  let lo = 0.1, hi = 2.0;
+  for (let iter = 0; iter < 40; iter++) {
+    const scale = (lo + hi) / 2;
+    const tSize = baseText * scale;
+    const lSize = baseLogo * scale;
+    const lW = imgRatio >= 1 ? lSize : lSize * imgRatio;
+    const lH = imgRatio >= 1 ? lSize / imgRatio : lSize;
+
+    ctx.font = `900 ${tSize}px ${textFont}`;
+    const tWidth = ctx.measureText(text).width;
+
+    const totalH = lH + tSize + gap;
+    const lCenterY = -totalH / 2 + lH / 2;
+    const tCenterY = totalH / 2 - tSize / 2;
+    const lMaxY = Math.max(Math.abs(lCenterY - lH / 2), Math.abs(lCenterY + lH / 2));
+    const tMaxY = Math.max(Math.abs(tCenterY - tSize / 2), Math.abs(tCenterY + tSize / 2));
+
+    let fits = true;
+    if (lMaxY >= safeRadius || tMaxY >= safeRadius) fits = false;
+    else {
+      const lChord = Math.sqrt(safeRadius * safeRadius - lMaxY * lMaxY);
+      const tChord = Math.sqrt(safeRadius * safeRadius - tMaxY * tMaxY);
+      if (lW / 2 > lChord || tWidth / 2 > tChord) fits = false;
+    }
+
+    if (fits) lo = scale;
+    else hi = scale;
+  }
+
+  const scale = lo;
+  const tSize = baseText * scale;
+  const lSize = baseLogo * scale;
+  const lW = imgRatio >= 1 ? lSize : lSize * imgRatio;
+  const lH = imgRatio >= 1 ? lSize / imgRatio : lSize;
+  const totalH = lH + tSize + gap;
+  const lCenterY = cy - totalH / 2 + lH / 2;
+  const tCenterY = cy + totalH / 2 - tSize / 2;
+
+  ctx.drawImage(img, cx - lW / 2, lCenterY - lH / 2, lW, lH);
+  ctx.font = `900 ${tSize}px ${textFont}`;
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, cx, tCenterY);
+}
+
+function drawAutoFitBoth(ctx, emoji, text, s, textColor) {
+  const textFont = '-apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif';
+  const emojiFont = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+  const cx = s / 2;
+  const cy = s / 2;
+  const safeRadius = s * 0.44;
+  const hasEmoji = emoji && emoji.trim();
+  const hasText = text && text.trim();
+
+  if (!hasEmoji && !hasText) return;
+  if (hasEmoji && !hasText) {
+    ctx.font = `${s * 0.56}px ${emojiFont}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(emoji, cx, cy);
+    return;
+  }
+  if (!hasEmoji && hasText) {
+    drawAutoFitText(ctx, text, s, textColor);
+    return;
+  }
+
+  let lo = 0.1, hi = 2.0;
+  const baseTextSize = s * 0.18;
+  const baseEmojiSize = s * 0.28;
+  const gap = s * 0.02;
+
+  for (let iter = 0; iter < 40; iter++) {
+    const scale = (lo + hi) / 2;
+    const tSize = baseTextSize * scale;
+    const eSize = baseEmojiSize * scale;
+
+    ctx.font = `900 ${tSize}px ${textFont}`;
+    const tWidth = ctx.measureText(text).width;
+    ctx.font = `${eSize}px ${emojiFont}`;
+    const eWidth = ctx.measureText(emoji).width;
+
+    const totalHeight = eSize + tSize + gap;
+    const eCenterY = -totalHeight / 2 + eSize / 2;
+    const tCenterY = totalHeight / 2 - tSize / 2;
+
+    const eTopY = Math.abs(eCenterY) + eSize / 2;
+    const tBotY = Math.abs(tCenterY) + tSize / 2;
+
+    let fits = true;
+    if (eTopY >= safeRadius || tBotY >= safeRadius) {
+      fits = false;
+    } else {
+      const eChord = Math.sqrt(safeRadius * safeRadius - eTopY * eTopY);
+      const tChord = Math.sqrt(safeRadius * safeRadius - tBotY * tBotY);
+      if (eWidth / 2 > eChord || tWidth / 2 > tChord) fits = false;
+    }
+
+    if (fits) lo = scale;
+    else hi = scale;
+  }
+
+  const scale = lo;
+  const tSize = baseTextSize * scale;
+  const eSize = baseEmojiSize * scale;
+  const totalHeight = eSize + tSize + gap;
+  const eCenterY = cy - totalHeight / 2 + eSize / 2;
+  const tCenterY = cy + totalHeight / 2 - tSize / 2;
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = `${eSize}px ${emojiFont}`;
+  ctx.fillText(emoji, cx, eCenterY);
+  ctx.font = `900 ${tSize}px ${textFont}`;
+  ctx.fillStyle = textColor;
+  ctx.fillText(text, cx, tCenterY);
+}
+
+function findMaxFontSize(ctx, lines, radius, fontFamily) {
+  let lo = 10, hi = radius * 2;
+  while (hi - lo > 1) {
+    const mid = (lo + hi) / 2;
+    ctx.font = `900 ${mid}px ${fontFamily}`;
+    const lineHeight = mid * 1.15;
+    const totalHeight = lineHeight * lines.length;
+    let fits = true;
+
+    if (totalHeight > radius * 2) {
+      fits = false;
+    } else {
+      for (let i = 0; i < lines.length; i++) {
+        const yCenter = -totalHeight / 2 + lineHeight / 2 + i * lineHeight;
+        const topY = Math.abs(yCenter) + lineHeight / 2;
+        if (topY >= radius) { fits = false; break; }
+        const chordHalfWidth = Math.sqrt(radius * radius - topY * topY);
+        const textWidth = ctx.measureText(lines[i]).width;
+        if (textWidth / 2 > chordHalfWidth) { fits = false; break; }
+      }
+    }
+
+    if (fits) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
+function draw() {
+  const s = state.size;
+  canvas.width = s;
+  canvas.height = s;
+
+  ctx.clearRect(0, 0, s, s);
+  if (!state.transparent) {
+    ctx.fillStyle = state.bgColor;
+    ctx.fillRect(0, 0, s, s);
+  }
+
+  const cx = s / 2;
+  const cy = s / 2;
+
+  if (state.mode === 'text' && state.text.trim()) {
+    drawAutoFitText(ctx, state.text, s, state.textColor);
+  } else if (state.mode === 'emoji' && state.emoji) {
+    const fontSize = state.emojiSize * (s / 640);
+    ctx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(state.emoji, cx, cy);
+  } else if (state.mode === 'logo' && state.logoImage) {
+    const img = state.logoImage;
+    const safeDiameter = s * (state.logoSize / 100);
+    const ratio = img.width / img.height;
+    let drawW, drawH;
+    if (ratio >= 1) {
+      drawW = safeDiameter;
+      drawH = safeDiameter / ratio;
+    } else {
+      drawH = safeDiameter;
+      drawW = safeDiameter * ratio;
+    }
+    const offsetY = state.logoOffsetY * (s / 100);
+    ctx.drawImage(img, cx - drawW / 2, cy - drawH / 2 + offsetY, drawW, drawH);
+  } else if (state.mode === 'both') {
+    drawAutoFitBoth(ctx, state.bothEmoji, state.bothText, s, state.bothTextColor);
+  } else if (state.mode === 'logotext') {
+    drawAutoFitLogoText(ctx, state.logoImage, state.logoTextText, s, state.logoTextColor);
+  }
+
+}
+
+document.querySelectorAll('.chip[data-size]').forEach(chip => {
+  chip.onclick = () => {
+    document.querySelectorAll('.chip[data-size]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    state.size = +chip.dataset.size;
+    draw();
+  };
+});
+
+const bgColor = document.getElementById('bgColor');
+const bgHex = document.getElementById('bgHex');
+bgColor.oninput = () => {
+  state.transparent = false;
+  state.bgColor = bgColor.value.toUpperCase();
+  bgHex.value = state.bgColor;
+  draw();
+};
+bgHex.oninput = () => {
+  let v = bgHex.value.trim();
+  if (!v.startsWith('#')) v = '#' + v;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+    state.transparent = false;
+    state.bgColor = v.toUpperCase();
+    bgColor.value = v;
+    draw();
+  }
+};
+
+const colorRow = bgColor.closest('.color-row');
+
+function setTransparent(flag) {
+  state.transparent = flag;
+  if (flag) {
+    colorRow.classList.add('disabled');
+  } else {
+    colorRow.classList.remove('disabled');
+  }
+  draw();
+}
+
+document.querySelectorAll('.preset-color').forEach(p => {
+  p.onclick = () => {
+    const c = p.dataset.color;
+    if (c === 'transparent') {
+      setTransparent(true);
+      return;
+    }
+    setTransparent(false);
+    state.bgColor = c;
+    bgColor.value = c;
+    bgHex.value = c;
+    draw();
+  };
+});
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.tab-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+    state.mode = tab.dataset.tab;
+    draw();
+  };
+});
+
+const textInput = document.getElementById('textInput');
+textInput.oninput = () => { state.text = textInput.value; draw(); };
+
+const textColor = document.getElementById('textColor');
+const textHex = document.getElementById('textHex');
+textColor.oninput = () => { state.textColor = textColor.value.toUpperCase(); textHex.value = state.textColor; draw(); };
+textHex.oninput = () => {
+  let v = textHex.value.trim();
+  if (!v.startsWith('#')) v = '#' + v;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+    state.textColor = v.toUpperCase();
+    textColor.value = v;
+    draw();
+  }
+};
+
+const emojiInput = document.getElementById('emojiInput');
+emojiInput.oninput = () => { state.emoji = emojiInput.value; draw(); };
+
+const emojiSize = document.getElementById('emojiSize');
+const emojiSizeVal = document.getElementById('emojiSizeVal');
+emojiSize.oninput = () => { state.emojiSize = +emojiSize.value; emojiSizeVal.textContent = emojiSize.value; draw(); };
+
+const bothText = document.getElementById('bothText');
+bothText.oninput = () => { state.bothText = bothText.value; draw(); };
+const bothEmoji = document.getElementById('bothEmoji');
+bothEmoji.oninput = () => { state.bothEmoji = bothEmoji.value; draw(); };
+
+const bothTextColor = document.getElementById('bothTextColor');
+const bothTextHex = document.getElementById('bothTextHex');
+bothTextColor.oninput = () => { state.bothTextColor = bothTextColor.value.toUpperCase(); bothTextHex.value = state.bothTextColor; draw(); };
+bothTextHex.oninput = () => {
+  let v = bothTextHex.value.trim();
+  if (!v.startsWith('#')) v = '#' + v;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+    state.bothTextColor = v.toUpperCase();
+    bothTextColor.value = v;
+    draw();
+  }
+};
+
+const uploadBoxes = [
+  { box: document.getElementById('uploadBox'), input: document.getElementById('logoFile'), clear: document.getElementById('clearLogoBtn') },
+  { box: document.getElementById('uploadBox2'), input: document.getElementById('logoFile2'), clear: document.getElementById('clearLogoBtn2') }
+];
+
+function syncUploadBoxes(fileName) {
+  uploadBoxes.forEach(({ box, clear }) => {
+    const existing = box.querySelector('.upload-filename');
+    if (existing) existing.remove();
+    if (fileName) {
+      box.classList.add('has-file');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'upload-filename';
+      nameEl.textContent = '✓ ' + fileName;
+      box.appendChild(nameEl);
+      clear.style.display = 'block';
+    } else {
+      box.classList.remove('has-file');
+      clear.style.display = 'none';
+    }
+  });
+}
+
+function loadLogoFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    alert('請選擇圖片檔案（PNG / JPG / SVG）');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      state.logoImage = img;
+      syncUploadBoxes(file.name);
+      draw();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+uploadBoxes.forEach(({ box, input, clear }) => {
+  input.onchange = (e) => loadLogoFile(e.target.files[0]);
+  box.ondragover = (e) => { e.preventDefault(); box.classList.add('dragging'); };
+  box.ondragleave = () => box.classList.remove('dragging');
+  box.ondrop = (e) => {
+    e.preventDefault();
+    box.classList.remove('dragging');
+    loadLogoFile(e.dataTransfer.files[0]);
+  };
+  clear.onclick = (ev) => {
+    ev.preventDefault();
+    state.logoImage = null;
+    uploadBoxes.forEach(u => { u.input.value = ''; });
+    syncUploadBoxes(null);
+    draw();
+  };
+});
+
+const logoTextText = document.getElementById('logoTextText');
+logoTextText.oninput = () => { state.logoTextText = logoTextText.value; draw(); };
+
+const logoTextColor = document.getElementById('logoTextColor');
+const logoTextHex = document.getElementById('logoTextHex');
+logoTextColor.oninput = () => {
+  state.logoTextColor = logoTextColor.value.toUpperCase();
+  logoTextHex.value = state.logoTextColor;
+  draw();
+};
+logoTextHex.oninput = () => {
+  let v = logoTextHex.value.trim();
+  if (!v.startsWith('#')) v = '#' + v;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+    state.logoTextColor = v.toUpperCase();
+    logoTextColor.value = v;
+    draw();
+  }
+};
+
+const logoSize = document.getElementById('logoSize');
+const logoSizeVal = document.getElementById('logoSizeVal');
+logoSize.oninput = () => { state.logoSize = +logoSize.value; logoSizeVal.textContent = logoSize.value + '%'; draw(); };
+
+const logoOffsetY = document.getElementById('logoOffsetY');
+const logoOffsetYVal = document.getElementById('logoOffsetYVal');
+logoOffsetY.oninput = () => { state.logoOffsetY = +logoOffsetY.value; logoOffsetYVal.textContent = logoOffsetY.value; draw(); };
+
+const API_BASE = 'https://line-avatar-api.zeabur.app';
+const DOWNLOAD_KEY = 'line_avatar_download_count';
+const downloadBadge = document.getElementById('downloadBadge');
+const downloadCountEl = document.getElementById('downloadCount');
+
+function formatCount(n) {
+  return Number(n).toLocaleString('zh-TW');
+}
+
+function setBadge(n) {
+  downloadCountEl.textContent = formatCount(n);
+}
+
+function popBadge() {
+  downloadBadge.classList.remove('pop');
+  void downloadBadge.offsetWidth;
+  downloadBadge.classList.add('pop');
+}
+
+async function fetchGlobalCount() {
+  try {
+    const res = await fetch(API_BASE + '/count', { cache: 'no-store' });
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    setBadge(data.count);
+    localStorage.setItem(DOWNLOAD_KEY, String(data.count));
+  } catch (e) {
+    const cached = parseInt(localStorage.getItem(DOWNLOAD_KEY) || '0', 10);
+    setBadge(cached);
+  }
+}
+
+async function bumpGlobalCount() {
+  try {
+    const res = await fetch(API_BASE + '/count', { method: 'POST' });
+    if (!res.ok) throw new Error('bump failed');
+    const data = await res.json();
+    setBadge(data.count);
+    localStorage.setItem(DOWNLOAD_KEY, String(data.count));
+    popBadge();
+  } catch (e) {
+    const cached = parseInt(localStorage.getItem(DOWNLOAD_KEY) || '0', 10) + 1;
+    localStorage.setItem(DOWNLOAD_KEY, String(cached));
+    setBadge(cached);
+    popBadge();
+  }
+}
+
+fetchGlobalCount();
+
+document.getElementById('downloadBtn').onclick = () => {
+  const link = document.createElement('a');
+  link.download = `LINE頭照_${state.size}x${state.size}_${Date.now()}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  bumpGlobalCount();
+};
+
+document.getElementById('resetBtn').onclick = () => {
+  const saved = localStorage.getItem(DOWNLOAD_KEY);
+  location.reload();
+  if (saved !== null) localStorage.setItem(DOWNLOAD_KEY, saved);
+};
+
+draw();
+</script>
+</body>
+</html>
