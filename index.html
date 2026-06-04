@@ -392,44 +392,6 @@
     transition: opacity 0.2s;
   }
   footer a:hover { opacity: 0.7; }
-  .download-badge {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(6, 199, 85, 0.95);
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 24px;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 4px 16px rgba(6, 199, 85, 0.3);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    z-index: 100;
-    transition: transform 0.3s ease;
-    cursor: default;
-    user-select: none;
-  }
-  .download-badge.pop {
-    animation: popBadge 0.6s ease;
-  }
-  @keyframes popBadge {
-    0%   { transform: scale(1); }
-    30%  { transform: scale(1.15); }
-    100% { transform: scale(1); }
-  }
-  .download-badge .icon { font-size: 15px; }
-  .download-badge .count { font-variant-numeric: tabular-nums; }
-  @media (max-width: 768px) {
-    .download-badge {
-      bottom: 12px;
-      right: 12px;
-      padding: 8px 12px;
-      font-size: 12px;
-    }
-  }
 </style>
 </head>
 <body>
@@ -571,13 +533,6 @@
       製作人｜<a href="https://www.facebook.com/chitzuling/" target="_blank" rel="noopener noreferrer">紀澄 Abby</a>
       　·　開源於 <a href="https://github.com/ayumiya90/abby-avatar-maker" target="_blank" rel="noopener noreferrer">GitHub</a>
     </footer>
-  </div>
-
-  <div class="download-badge" id="downloadBadge" title="全站累計下載次數">
-    <span class="icon">⬇️</span>
-    <span>全站已下載</span>
-    <span class="count" id="downloadCount">...</span>
-    <span>次</span>
   </div>
 
 <script>
@@ -1092,68 +1047,15 @@ const logoOffsetY = document.getElementById('logoOffsetY');
 const logoOffsetYVal = document.getElementById('logoOffsetYVal');
 logoOffsetY.oninput = () => { state.logoOffsetY = +logoOffsetY.value; logoOffsetYVal.textContent = logoOffsetY.value; draw(); };
 
-const API_BASE = 'https://line-avatar-api.zeabur.app';
-const DOWNLOAD_KEY = 'line_avatar_download_count';
-const downloadBadge = document.getElementById('downloadBadge');
-const downloadCountEl = document.getElementById('downloadCount');
-
-function formatCount(n) {
-  return Number(n).toLocaleString('zh-TW');
-}
-
-function setBadge(n) {
-  downloadCountEl.textContent = formatCount(n);
-}
-
-function popBadge() {
-  downloadBadge.classList.remove('pop');
-  void downloadBadge.offsetWidth;
-  downloadBadge.classList.add('pop');
-}
-
-async function fetchGlobalCount() {
-  try {
-    const res = await fetch(API_BASE + '/count', { cache: 'no-store' });
-    if (!res.ok) throw new Error('fetch failed');
-    const data = await res.json();
-    setBadge(data.count);
-    localStorage.setItem(DOWNLOAD_KEY, String(data.count));
-  } catch (e) {
-    const cached = parseInt(localStorage.getItem(DOWNLOAD_KEY) || '0', 10);
-    setBadge(cached);
-  }
-}
-
-async function bumpGlobalCount() {
-  try {
-    const res = await fetch(API_BASE + '/count', { method: 'POST' });
-    if (!res.ok) throw new Error('bump failed');
-    const data = await res.json();
-    setBadge(data.count);
-    localStorage.setItem(DOWNLOAD_KEY, String(data.count));
-    popBadge();
-  } catch (e) {
-    const cached = parseInt(localStorage.getItem(DOWNLOAD_KEY) || '0', 10) + 1;
-    localStorage.setItem(DOWNLOAD_KEY, String(cached));
-    setBadge(cached);
-    popBadge();
-  }
-}
-
-fetchGlobalCount();
-
 document.getElementById('downloadBtn').onclick = () => {
   const link = document.createElement('a');
   link.download = `LINE頭照_${state.size}x${state.size}_${Date.now()}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-  bumpGlobalCount();
 };
 
 document.getElementById('resetBtn').onclick = () => {
-  const saved = localStorage.getItem(DOWNLOAD_KEY);
   location.reload();
-  if (saved !== null) localStorage.setItem(DOWNLOAD_KEY, saved);
 };
 
 draw();
